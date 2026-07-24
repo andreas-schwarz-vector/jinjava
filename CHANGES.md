@@ -1,5 +1,5 @@
 # Jinjava Releases #
-### 2026-07-23 Version 2.8.4 ([Maven Central](https://search.maven.org/artifact/com.hubspot.jinjava/jinjava/2.8.4/jar)) ###
+### 2026-07-24 Version 2.8.4 ([Maven Central](https://search.maven.org/artifact/com.hubspot.jinjava/jinjava/2.8.4/jar)) ###
 * [Add support for configurable multi-character delimiters](https://github.com/HubSpot/jinjava/pull/1305)
 * [Treat backslash as an escape character only inside quoted strings, matching Jinja2](https://github.com/HubSpot/jinjava/pull/1306)
 * [Add `keepTrailingNewline` option to match Python Jinja2's default of stripping a single trailing newline](https://github.com/HubSpot/jinjava/pull/1311)
