@@ -87,6 +87,7 @@ public class FilterLibrary extends SimpleLibrary<Filter> {
       PlusTimeFilter.class,
       PrettyPrintFilter.class,
       RandomFilter.class,
+      MatchesRegexFilter.class,
       RegexReplaceFilter.class,
       RejectFilter.class,
       RejectAttrFilter.class,

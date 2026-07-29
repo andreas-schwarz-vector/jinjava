@@ -43,6 +43,7 @@ public class ExpTestLibrary extends SimpleLibrary<ExpTest> {
       IsFloatExpTest.class,
       IsStringExpTest.class,
       IsStringContainingExpTest.class,
+      IsStringMatchingRegexExpTest.class,
       IsStringStartingWithExpTest.class,
       IsTrueExpTest.class,
       IsFalseExpTest.class,
