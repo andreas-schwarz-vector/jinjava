@@ -8,10 +8,9 @@ import com.hubspot.jinjava.objects.SafeString;
 import java.util.Arrays;
 import org.junit.Test;
 
-public class IsStringMatchingRegexExpTestTest extends BaseJinjavaTest {
+public class IsStringSearchExpTestTest extends BaseJinjavaTest {
 
-  private static final String MATCHING_TEMPLATE =
-    "{{ var is string_matching_regex arg }}";
+  private static final String MATCHING_TEMPLATE = "{{ var is search arg }}";
 
   @Test
   public void itReturnsTrueForMatchingRegex() {
@@ -55,7 +54,7 @@ public class IsStringMatchingRegexExpTestTest extends BaseJinjavaTest {
   @Test
   public void itWorksWithSelectattr() {
     String template =
-      "{% for item in items|selectattr('name', 'string_matching_regex', '^foo') %}{{ item.name }},{% endfor %}";
+      "{% for item in items|selectattr('name', 'search', '^foo') %}{{ item.name }},{% endfor %}";
     assertThat(
       jinjava.render(
         template,

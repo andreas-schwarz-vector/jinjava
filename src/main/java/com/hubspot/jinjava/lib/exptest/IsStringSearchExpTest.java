@@ -24,21 +24,21 @@ import com.hubspot.jinjava.interpret.TemplateSyntaxException;
   ),
   snippets = {
     @JinjavaSnippet(
-      code = "{% if variable is string_matching_regex '[0-9]+' %}\n" +
+      code = "{% if variable is search '[0-9]+' %}\n" +
       "      <!--code to render if variable matches regex -->\n" +
       "{% endif %}"
     ),
     @JinjavaSnippet(
       desc = "Use with selectattr to filter a list by regex",
-      code = "{{ items|selectattr('name', 'string_matching_regex', '^foo') }}"
+      code = "{{ items|selectattr('name', 'search', '^foo') }}"
     ),
   }
 )
-public class IsStringMatchingRegexExpTest extends IsStringExpTest {
+public class IsStringSearchExpTest extends IsStringExpTest {
 
   @Override
   public String getName() {
-    return super.getName() + "_matching_regex";
+    return "search";
   }
 
   @Override

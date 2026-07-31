@@ -12,13 +12,13 @@ import com.hubspot.jinjava.objects.SafeString;
 import org.junit.Before;
 import org.junit.Test;
 
-public class MatchesRegexFilterTest extends BaseInterpretingTest {
+public class RegexMatchFilterTest extends BaseInterpretingTest {
 
-  MatchesRegexFilter filter;
+  RegexMatchFilter filter;
 
   @Before
   public void setup() {
-    filter = new MatchesRegexFilter();
+    filter = new RegexMatchFilter();
   }
 
   @Test
@@ -81,7 +81,7 @@ public class MatchesRegexFilterTest extends BaseInterpretingTest {
       )
       .isInstanceOf(InvalidInputException.class)
       .hasMessageContaining(
-        "Invalid input for 'matches_regex': input with length '101' exceeds maximum allowed length of '10'"
+        "Invalid input for 'regex_match': input with length '101' exceeds maximum allowed length of '10'"
       );
   }
 }

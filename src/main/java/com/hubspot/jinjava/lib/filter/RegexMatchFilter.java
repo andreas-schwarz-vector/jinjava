@@ -33,23 +33,23 @@ import com.hubspot.jinjava.objects.SafeString;
   },
   snippets = {
     @JinjavaSnippet(
-      code = "{% if \"It costs $300\"|matches_regex(\"[0-9]+\") %}\n" +
+      code = "{% if \"It costs $300\"|regex_match(\"[0-9]+\") %}\n" +
       "    Contains a number\n" +
       "{% endif %}"
     ),
     @JinjavaSnippet(
       desc = "Anchor the pattern to match the entire string",
-      code = "{% if \"hello\"|matches_regex(\"^[a-z]+$\") %}\n" +
+      code = "{% if \"hello\"|regex_match(\"^[a-z]+$\") %}\n" +
       "    All lowercase letters\n" +
       "{% endif %}"
     ),
   }
 )
-public class MatchesRegexFilter implements Filter {
+public class RegexMatchFilter implements Filter {
 
   @Override
   public String getName() {
-    return "matches_regex";
+    return "regex_match";
   }
 
   @Override
