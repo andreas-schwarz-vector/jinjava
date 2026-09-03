@@ -22,8 +22,6 @@ public class PyishSerializer extends ValueSerializer<Object> {
     JsonGenerator jsonGenerator,
     SerializationContext context
   ) {
-    // The pretty printer can no longer be swapped out mid-stream in Jackson 3;
-    // every ObjectWriter routing through this serializer already uses PyishPrettyPrinter.
     jsonGenerator.setCharacterEscapes(PyishCharacterEscapes.INSTANCE);
     String string;
     Object wrappedObject = JinjavaInterpreter

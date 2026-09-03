@@ -9,15 +9,18 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import tools.jackson.core.JacksonException;
 import tools.jackson.core.JsonGenerator;
-import tools.jackson.core.json.JsonFactoryBuilder;
 import tools.jackson.databind.ObjectWriter;
 import tools.jackson.databind.SerializationContext;
 import tools.jackson.databind.json.JsonMapper;
 
 @Beta
 public interface PyishSerializable extends PyWrapper {
-  ObjectWriter SELF_WRITER = JsonMapper
-    .builder(new JsonFactoryBuilder().quoteChar('\'').build())
+  ObjectWriter SELF_WRITER = JinjavaMapperDefaults
+    .applyTo(
+      JsonMapper.builder(
+        JinjavaMapperDefaults.jsonFactoryBuilder().quoteChar('\'').build()
+      )
+    )
     .build()
     .writer()
     .with(PyishPrettyPrinter.INSTANCE)

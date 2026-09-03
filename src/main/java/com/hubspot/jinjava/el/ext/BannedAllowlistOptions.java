@@ -15,7 +15,8 @@ public class BannedAllowlistOptions {
     Method.class.getPackage().getName(); // java.lang.reflect
   private static final String JACKSON_DATABIND_PACKAGE =
     ObjectMapper.class.getPackage().getName(); // tools.jackson.databind
-  // Jackson 2 is no longer a dependency, but it may still be on a consumer's classpath
+  // jinjava compiles against Jackson 3, but Jackson 2 is still on the classpath
+  // transitively (com.hubspot:algebra), so its databind package stays banned too
   private static final String LEGACY_JACKSON_DATABIND_PACKAGE =
     "com.fasterxml.jackson.databind";
 

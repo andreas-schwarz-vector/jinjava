@@ -12,7 +12,6 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import tools.jackson.core.JacksonException;
 import tools.jackson.core.JsonGenerator;
-import tools.jackson.core.json.JsonFactoryBuilder;
 import tools.jackson.databind.DatabindException;
 import tools.jackson.databind.ObjectWriter;
 import tools.jackson.databind.PropertyNamingStrategies;
@@ -46,8 +45,12 @@ public class PyishObjectMapper {
   }
 
   private static JsonMapper.Builder getPyishObjectMapperBuilder() {
-    return JsonMapper
-      .builder(new JsonFactoryBuilder().quoteChar('\'').build())
+    return JinjavaMapperDefaults
+      .applyTo(
+        JsonMapper.builder(
+          JinjavaMapperDefaults.jsonFactoryBuilder().quoteChar('\'').build()
+        )
+      )
       .addModule(
         new SimpleModule()
           .setSerializerModifier(PyishBeanSerializerModifier.INSTANCE)

@@ -1,5 +1,6 @@
 package com.hubspot.jinjava.lib.filter;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 import com.hubspot.jinjava.BaseInterpretingTest;
@@ -47,15 +48,12 @@ public class ToJsonFilterTest extends BaseInterpretingTest {
       new Jinjava(BaseJinjavaTest.newConfigBuilder().withMaxOutputSize(500).build())
         .newInterpreter();
     assertThat(filter.filter(original, interpreter)).asString().contains("[[]]]]");
-    // Grow sideways rather than deeper: Jackson 3 caps write nesting depth at 500,
-    // and this test is about the output size limit, not that cap.
     for (int i = 0; i < 400; i++) {
-      temp.add(new ArrayList<>());
+      List<List<?>> nested = new ArrayList<>();
+      temp.add(nested);
+      temp = nested;
     }
-    try {
-      filter.filter(original, interpreter);
-    } catch (Exception e) {
-      assertThat(e).isInstanceOf(OutputTooBigException.class);
-    }
+    assertThatThrownBy(() -> filter.filter(original, interpreter))
+      .isInstanceOf(OutputTooBigException.class);
   }
 }

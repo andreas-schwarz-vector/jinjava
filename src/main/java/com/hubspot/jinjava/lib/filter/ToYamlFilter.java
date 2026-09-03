@@ -6,6 +6,7 @@ import com.hubspot.jinjava.doc.annotations.JinjavaSnippet;
 import com.hubspot.jinjava.interpret.InvalidInputException;
 import com.hubspot.jinjava.interpret.InvalidReason;
 import com.hubspot.jinjava.interpret.JinjavaInterpreter;
+import com.hubspot.jinjava.objects.serialization.JinjavaMapperDefaults;
 import tools.jackson.core.JacksonException;
 import tools.jackson.dataformat.yaml.YAMLMapper;
 import tools.jackson.dataformat.yaml.YAMLWriteFeature;
@@ -21,8 +22,8 @@ import tools.jackson.dataformat.yaml.YAMLWriteFeature;
 )
 public class ToYamlFilter implements Filter {
 
-  private static final YAMLMapper OBJECT_MAPPER = YAMLMapper
-    .builder()
+  private static final YAMLMapper OBJECT_MAPPER = JinjavaMapperDefaults
+    .applyTo(YAMLMapper.builder())
     .disable(YAMLWriteFeature.WRITE_DOC_START_MARKER)
     .build();
 

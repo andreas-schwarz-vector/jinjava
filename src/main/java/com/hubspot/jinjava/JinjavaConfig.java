@@ -34,6 +34,7 @@ import com.hubspot.jinjava.mode.DefaultExecutionMode;
 import com.hubspot.jinjava.mode.ExecutionMode;
 import com.hubspot.jinjava.objects.date.CurrentDateTimeProvider;
 import com.hubspot.jinjava.objects.date.DateTimeProvider;
+import com.hubspot.jinjava.objects.serialization.JinjavaMapperDefaults;
 import com.hubspot.jinjava.random.RandomNumberGeneratorStrategy;
 import com.hubspot.jinjava.tree.Node;
 import com.hubspot.jinjava.tree.parse.DefaultTokenScannerSymbols;
@@ -230,7 +231,9 @@ public class JinjavaConfig {
 
   @Value.Default
   public ObjectMapper getObjectMapper() {
-    JsonMapper.Builder builder = JsonMapper.builder();
+    JsonMapper.Builder builder = JinjavaMapperDefaults.applyTo(
+      JsonMapper.builder(JinjavaMapperDefaults.jsonFactoryBuilder().build())
+    );
     if (getLegacyOverrides().isUseSnakeCasePropertyNaming()) {
       builder.propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
     }
