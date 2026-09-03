@@ -1,13 +1,13 @@
 package com.hubspot.jinjava.lib.filter;
 
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.hubspot.jinjava.doc.annotations.JinjavaDoc;
 import com.hubspot.jinjava.doc.annotations.JinjavaParam;
 import com.hubspot.jinjava.doc.annotations.JinjavaSnippet;
 import com.hubspot.jinjava.interpret.InvalidInputException;
 import com.hubspot.jinjava.interpret.InvalidReason;
 import com.hubspot.jinjava.interpret.JinjavaInterpreter;
-import java.io.IOException;
+import tools.jackson.core.JacksonException;
+import tools.jackson.dataformat.yaml.YAMLMapper;
 
 @JinjavaDoc(
   value = "Converts a YAML string to an object",
@@ -33,7 +33,7 @@ public class FromYamlFilter implements Filter {
     }
     try {
       return OBJECT_MAPPER.readValue((String) var, Object.class);
-    } catch (IOException e) {
+    } catch (JacksonException e) {
       throw new InvalidInputException(interpreter, this, InvalidReason.JSON_READ);
     }
   }

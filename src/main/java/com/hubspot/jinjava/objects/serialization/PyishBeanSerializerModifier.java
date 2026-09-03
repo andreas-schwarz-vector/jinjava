@@ -1,15 +1,15 @@
 package com.hubspot.jinjava.objects.serialization;
 
-import com.fasterxml.jackson.databind.BeanDescription;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializationConfig;
-import com.fasterxml.jackson.databind.ser.BeanSerializer;
-import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import com.google.common.annotations.Beta;
 import java.util.Map;
+import tools.jackson.databind.BeanDescription;
+import tools.jackson.databind.SerializationConfig;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.ser.ValueSerializerModifier;
+import tools.jackson.databind.ser.bean.BeanSerializerBase;
 
 @Beta
-public class PyishBeanSerializerModifier extends BeanSerializerModifier {
+public class PyishBeanSerializerModifier extends ValueSerializerModifier {
 
   public static final PyishBeanSerializerModifier INSTANCE =
     new PyishBeanSerializerModifier();
@@ -17,10 +17,10 @@ public class PyishBeanSerializerModifier extends BeanSerializerModifier {
   private PyishBeanSerializerModifier() {}
 
   @Override
-  public JsonSerializer<?> modifySerializer(
+  public ValueSerializer<?> modifySerializer(
     SerializationConfig config,
-    BeanDescription beanDesc,
-    JsonSerializer<?> serializer
+    BeanDescription.Supplier beanDesc,
+    ValueSerializer<?> serializer
   ) {
     // Use the PyishSerializer if it extends the PyishSerializable class.
     // For example, a Map implementation could then have custom string serialization.
@@ -28,7 +28,7 @@ public class PyishBeanSerializerModifier extends BeanSerializerModifier {
       if (Map.Entry.class.isAssignableFrom(beanDesc.getBeanClass())) {
         return MapEntrySerializer.INSTANCE;
       }
-      if (serializer instanceof BeanSerializer) {
+      if (serializer instanceof BeanSerializerBase) {
         return BothCasingBeanSerializer.wrapping(serializer);
       }
       return serializer;

@@ -21,7 +21,6 @@ import com.hubspot.jinjava.tree.Node;
 import com.hubspot.jinjava.tree.parse.ExpressionToken;
 import com.hubspot.jinjava.tree.parse.TokenScannerSymbols;
 import com.hubspot.jinjava.util.EagerExpressionResolver.EagerExpressionResult.ResolutionState;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -37,6 +36,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.el.ELException;
 import org.apache.commons.lang3.StringUtils;
+import tools.jackson.core.JacksonException;
 
 @Beta
 public class EagerExpressionResolver {
@@ -112,7 +112,7 @@ public class EagerExpressionResolver {
           return pyishString;
         }
       }
-    } catch (IOException | OutputTooBigException ignored) {}
+    } catch (JacksonException | OutputTooBigException ignored) {}
     throw new DeferredValueException("Can not convert deferred result to string");
   }
 

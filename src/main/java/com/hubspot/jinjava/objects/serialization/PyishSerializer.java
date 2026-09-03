@@ -1,26 +1,29 @@
 package com.hubspot.jinjava.objects.serialization;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import com.google.common.annotations.Beta;
 import com.hubspot.jinjava.interpret.JinjavaInterpreter;
 import java.io.IOException;
 import java.util.Objects;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.exc.JacksonIOException;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
 
 @Beta
-public class PyishSerializer extends JsonSerializer<Object> {
+public class PyishSerializer extends ValueSerializer<Object> {
 
   public static final PyishSerializer INSTANCE = new PyishSerializer();
 
   private PyishSerializer() {}
 
+  @Override
   public void serialize(
     Object object,
     JsonGenerator jsonGenerator,
-    SerializerProvider serializerProvider
-  ) throws IOException {
-    jsonGenerator.setPrettyPrinter(PyishPrettyPrinter.INSTANCE);
+    SerializationContext context
+  ) {
+    // The pretty printer can no longer be swapped out mid-stream in Jackson 3;
+    // every ObjectWriter routing through this serializer already uses PyishPrettyPrinter.
     jsonGenerator.setCharacterEscapes(PyishCharacterEscapes.INSTANCE);
     String string;
     Object wrappedObject = JinjavaInterpreter
@@ -28,10 +31,11 @@ public class PyishSerializer extends JsonSerializer<Object> {
       .map(interpreter -> interpreter.wrap(object))
       .orElse(object);
     if (wrappedObject instanceof PyishSerializable) {
-      ((PyishSerializable) wrappedObject).writePyishSelf(
-          jsonGenerator,
-          serializerProvider
-        );
+      try {
+        ((PyishSerializable) wrappedObject).writePyishSelf(jsonGenerator, context);
+      } catch (IOException e) {
+        throw JacksonIOException.construct(e, jsonGenerator);
+      }
     } else if (wrappedObject instanceof Boolean) {
       jsonGenerator.writeBoolean((Boolean) wrappedObject);
     } else if (wrappedObject instanceof Number) {

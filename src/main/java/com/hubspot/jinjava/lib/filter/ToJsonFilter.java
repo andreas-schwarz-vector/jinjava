@@ -10,9 +10,9 @@ import com.hubspot.jinjava.interpret.JinjavaInterpreter;
 import com.hubspot.jinjava.objects.serialization.LengthLimitingWriter;
 import com.hubspot.jinjava.objects.serialization.PyishObjectMapper;
 import java.io.CharArrayWriter;
-import java.io.IOException;
 import java.io.Writer;
 import java.util.concurrent.atomic.AtomicInteger;
+import tools.jackson.core.JacksonException;
 
 @JinjavaDoc(
   value = "Writes object as a JSON string",
@@ -38,7 +38,7 @@ public class ToJsonFilter implements Filter {
       } else {
         return interpreter.getConfig().getObjectMapper().writeValueAsString(var);
       }
-    } catch (IOException e) {
+    } catch (JacksonException e) {
       if (e.getCause() instanceof DeferredValueException) {
         throw (DeferredValueException) e.getCause();
       }

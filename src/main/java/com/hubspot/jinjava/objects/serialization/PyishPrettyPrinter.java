@@ -1,9 +1,8 @@
 package com.hubspot.jinjava.objects.serialization;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.google.common.annotations.Beta;
-import java.io.IOException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.util.DefaultPrettyPrinter;
 
 @Beta
 public class PyishPrettyPrinter extends DefaultPrettyPrinter {
@@ -16,15 +15,14 @@ public class PyishPrettyPrinter extends DefaultPrettyPrinter {
   }
 
   private PyishPrettyPrinter() {
-    _objectIndenter = FixedSpaceIndenter.instance;
-    _spacesInObjectEntries = false;
+    _objectIndenter = FixedSpaceIndenter.instance();
   }
 
   @Override
   public void beforeArrayValues(JsonGenerator jg) {}
 
   @Override
-  public void writeEndArray(JsonGenerator jg, int nrOfValues) throws IOException {
+  public void writeEndArray(JsonGenerator jg, int nrOfValues) {
     if (!this._arrayIndenter.isInline()) {
       --this._nesting;
     }
@@ -32,7 +30,7 @@ public class PyishPrettyPrinter extends DefaultPrettyPrinter {
   }
 
   @Override
-  public void writeObjectFieldValueSeparator(JsonGenerator jg) throws IOException {
+  public void writeObjectNameValueSeparator(JsonGenerator jg) {
     jg.writeRaw(": ");
   }
 
@@ -40,7 +38,7 @@ public class PyishPrettyPrinter extends DefaultPrettyPrinter {
   public void beforeObjectEntries(JsonGenerator jg) {}
 
   @Override
-  public void writeEndObject(JsonGenerator jg, int nrOfEntries) throws IOException {
+  public void writeEndObject(JsonGenerator jg, int nrOfEntries) {
     if (!this._objectIndenter.isInline()) {
       --this._nesting;
     }

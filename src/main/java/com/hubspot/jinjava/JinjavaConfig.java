@@ -17,9 +17,6 @@ package com.hubspot.jinjava;
 
 import static com.hubspot.jinjava.lib.fn.Functions.DEFAULT_RANGE_LIMIT;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.google.common.collect.ImmutableMap;
 import com.hubspot.jinjava.el.JinjavaInterpreterResolver;
 import com.hubspot.jinjava.el.JinjavaObjectUnwrapper;
@@ -51,6 +48,9 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import javax.el.ELResolver;
 import org.immutables.value.Value;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.PropertyNamingStrategies;
+import tools.jackson.databind.json.JsonMapper;
 
 @Value.Immutable(singleton = true)
 @JinjavaImmutableStyle.WithStyle
@@ -230,11 +230,11 @@ public class JinjavaConfig {
 
   @Value.Default
   public ObjectMapper getObjectMapper() {
-    ObjectMapper objectMapper = new ObjectMapper().registerModule(new Jdk8Module());
+    JsonMapper.Builder builder = JsonMapper.builder();
     if (getLegacyOverrides().isUseSnakeCasePropertyNaming()) {
-      objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+      builder.propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
     }
-    return objectMapper;
+    return builder.build();
   }
 
   @Value.Default

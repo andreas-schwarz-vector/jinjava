@@ -1,11 +1,10 @@
 package com.hubspot.jinjava.interpret;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.hubspot.jinjava.interpret.NullValue.NullValueSerializer;
-import java.io.IOException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.ser.std.StdSerializer;
 
 /**
  * Marker object of a `null` value. A null value in the map is usually considered
@@ -31,8 +30,8 @@ public final class NullValue {
     public void serialize(
       NullValue value,
       JsonGenerator jgen,
-      SerializerProvider provider
-    ) throws IOException {
+      SerializationContext context
+    ) {
       jgen.writeNull();
     }
   }

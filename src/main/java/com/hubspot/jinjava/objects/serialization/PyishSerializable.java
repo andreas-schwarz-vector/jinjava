@@ -1,12 +1,5 @@
 package com.hubspot.jinjava.objects.serialization;
 
-import com.fasterxml.jackson.core.JsonFactoryBuilder;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.google.common.annotations.Beta;
 import com.hubspot.jinjava.interpret.DeferredValueException;
 import com.hubspot.jinjava.objects.PyWrapper;
@@ -14,19 +7,25 @@ import com.hubspot.jinjava.util.LengthLimitingStringBuilder;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.json.JsonFactoryBuilder;
+import tools.jackson.databind.ObjectWriter;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.json.JsonMapper;
 
 @Beta
 public interface PyishSerializable extends PyWrapper {
-  ObjectWriter SELF_WRITER = new ObjectMapper(
-    new JsonFactoryBuilder().quoteChar('\'').build()
-  )
-    .registerModule(new Jdk8Module())
-    .writer(PyishPrettyPrinter.INSTANCE)
+  ObjectWriter SELF_WRITER = JsonMapper
+    .builder(new JsonFactoryBuilder().quoteChar('\'').build())
+    .build()
+    .writer()
+    .with(PyishPrettyPrinter.INSTANCE)
     .with(PyishCharacterEscapes.INSTANCE);
 
   /**
    * Allows for a class to append the custom string representation in Jinjava.
-   * This method will be used by {@link #writePyishSelf(JsonGenerator, SerializerProvider)}
+   * This method will be used by {@link #writePyishSelf(JsonGenerator, SerializationContext)}
    * to specify what will be written to the json generator.
    * <p>
    * @param appendable Appendable to append the pyish string representation to.
@@ -46,13 +45,11 @@ public interface PyishSerializable extends PyWrapper {
    * then this method can be overridden to do so instead of a single call to
    * {@link JsonGenerator#writeRawValue(String)}.
    * @param jsonGenerator The JsonGenerator to write to.
-   * @param serializerProvider Provides default value serialization and attributes stored on the ObjectWriter if needed.
+   * @param context Provides default value serialization and attributes stored on the ObjectWriter if needed.
    */
-  default void writePyishSelf(
-    JsonGenerator jsonGenerator,
-    SerializerProvider serializerProvider
-  ) throws IOException {
-    AtomicInteger remainingLength = (AtomicInteger) serializerProvider.getAttribute(
+  default void writePyishSelf(JsonGenerator jsonGenerator, SerializationContext context)
+    throws IOException {
+    AtomicInteger remainingLength = (AtomicInteger) context.getAttribute(
       LengthLimitingWriter.REMAINING_LENGTH_ATTRIBUTE
     );
     jsonGenerator.writeRawValue(
@@ -74,7 +71,7 @@ public interface PyishSerializable extends PyWrapper {
   static String writeValueAsString(Object value) {
     try {
       return SELF_WRITER.writeValueAsString(value);
-    } catch (JsonProcessingException e) {
+    } catch (JacksonException e) {
       if (e.getCause() instanceof DeferredValueException) {
         throw (DeferredValueException) e.getCause();
       }

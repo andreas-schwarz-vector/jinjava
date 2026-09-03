@@ -1,12 +1,12 @@
 package com.hubspot.jinjava.el.ext;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableSet;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
+import tools.jackson.databind.ObjectMapper;
 
 public class BannedAllowlistOptions {
 
@@ -14,13 +14,17 @@ public class BannedAllowlistOptions {
   private static final String JAVA_LANG_REFLECT_PACKAGE =
     Method.class.getPackage().getName(); // java.lang.reflect
   private static final String JACKSON_DATABIND_PACKAGE =
-    ObjectMapper.class.getPackage().getName(); // com.fasterxml.jackson.databind
+    ObjectMapper.class.getPackage().getName(); // tools.jackson.databind
+  // Jackson 2 is no longer a dependency, but it may still be on a consumer's classpath
+  private static final String LEGACY_JACKSON_DATABIND_PACKAGE =
+    "com.fasterxml.jackson.databind";
 
   private static final String[] BANNED_PREFIXES = {
     Class.class.getCanonicalName(),
     Object.class.getCanonicalName(),
     JAVA_LANG_REFLECT_PACKAGE,
     JACKSON_DATABIND_PACKAGE,
+    LEGACY_JACKSON_DATABIND_PACKAGE,
   };
 
   private static final Set<String> ALLOWED_JINJAVA_PREFIXES = Stream

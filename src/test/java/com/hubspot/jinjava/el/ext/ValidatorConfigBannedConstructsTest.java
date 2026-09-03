@@ -2,12 +2,12 @@ package com.hubspot.jinjava.el.ext;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hubspot.jinjava.interpret.JinjavaInterpreter;
 import com.hubspot.jinjava.lib.exptest.ExpTest;
 import com.hubspot.jinjava.lib.filter.Filter;
 import java.lang.reflect.Method;
 import org.junit.Test;
+import tools.jackson.databind.ObjectMapper;
 
 public class ValidatorConfigBannedConstructsTest {
 

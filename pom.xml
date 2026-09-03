@@ -23,7 +23,10 @@
     <dep.hubspot-immutables.version>1.11.4</dep.hubspot-immutables.version>
     <dep.algebra.version>1.7.2</dep.algebra.version>
     <dep.mockito.version>5.20.0</dep.mockito.version>
+    <!-- Jackson 3 is what jinjava compiles against; dep.jackson.version only feeds
+         basepom's Jackson 2 BOM import, which still has to resolve. -->
     <dep.jackson.version>2.20.1</dep.jackson.version>
+    <dep.jackson3.version>3.0.3</dep.jackson3.version>
 
     <basepom.test.add.opens>
       --add-opens=java.base/java.lang=ALL-UNNAMED
@@ -75,24 +78,19 @@
         <version>2.20</version>
       </dependency>
       <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
+        <groupId>tools.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
-        <version>${dep.jackson.version}</version>
+        <version>${dep.jackson3.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
+        <groupId>tools.jackson.core</groupId>
         <artifactId>jackson-core</artifactId>
-        <version>${dep.jackson.version}</version>
+        <version>${dep.jackson3.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.fasterxml.jackson.dataformat</groupId>
+        <groupId>tools.jackson.dataformat</groupId>
         <artifactId>jackson-dataformat-yaml</artifactId>
-        <version>${dep.jackson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.datatype</groupId>
-        <artifactId>jackson-datatype-jdk8</artifactId>
-        <version>${dep.jackson.version}</version>
+        <version>${dep.jackson3.version}</version>
       </dependency>
       <dependency>
         <groupId>com.hubspot.immutables</groupId>
@@ -162,20 +160,16 @@
       <artifactId>jackson-annotations</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
+      <groupId>tools.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
+      <groupId>tools.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <groupId>tools.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-yaml</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
-      <artifactId>jackson-datatype-jdk8</artifactId>
     </dependency>
     <dependency>
       <groupId>ch.obermuhlner</groupId>

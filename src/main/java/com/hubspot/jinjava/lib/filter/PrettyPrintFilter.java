@@ -1,6 +1,5 @@
 package com.hubspot.jinjava.lib.filter;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hubspot.jinjava.doc.annotations.JinjavaDoc;
 import com.hubspot.jinjava.doc.annotations.JinjavaParam;
 import com.hubspot.jinjava.doc.annotations.JinjavaSnippet;
@@ -11,6 +10,7 @@ import com.hubspot.jinjava.objects.date.PyishDate;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
+import tools.jackson.core.JacksonException;
 
 @JinjavaDoc(
   value = "Pretty print a variable. Useful for debugging.",
@@ -60,7 +60,7 @@ public class PrettyPrintFilter implements Filter {
             .getObjectMapper()
             .writerWithDefaultPrettyPrinter()
             .writeValueAsString(var);
-      } catch (JsonProcessingException e) {
+      } catch (JacksonException e) {
         throw new InvalidInputException(interpreter, this, InvalidReason.JSON_WRITE);
       }
     }

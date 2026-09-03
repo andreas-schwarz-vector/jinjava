@@ -1,10 +1,10 @@
 package com.hubspot.jinjava.objects.serialization;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.annotations.Beta;
+import tools.jackson.core.JacksonException;
 
 @Beta
-public class LengthLimitingJsonProcessingException extends JsonProcessingException {
+public class LengthLimitingJsonProcessingException extends JacksonException {
 
   private final int maxSize;
   private final int attemptedSize;
